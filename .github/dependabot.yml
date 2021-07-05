@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: 'php:composer'
+    directory: '/'
+    schedule:
+      interval: weekly
+      time: '04:00'
+    open-pull-requests-limit: 20
+    labels:
+      - kind/DEPENDENCIES
+      - status/CR-NEEDED
+    versioning-strategy: increase
+    commit-message:
+      prefix: deps
+      prefix-development: build
