@@ -2,12 +2,39 @@ version: '3.9'
 
 services:
   database:
-    container_name: 'database'
+    container_name: database
     image: postgres:13-alpine
     restart: unless-stopped
     environment:
-      - POSTGRES_PASSWORD={DATABASE_PASSWORD}
-      - POSTGRES_USER={DATABASE_USER}
-      - POSTGRES_DB={DATABASE_NAME}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USER}
     ports:
-    - '5432:5432'
+      - '5432:5432'
+
+  platform:
+    container_name: platform
+    build:
+      context: ./php-fpm
+    depends_on:
+      - database
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
+      - DATABASE_URL=postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@database:5432/${DATABASE_NAME}?serverVersion=13&charset=utf8
+    volumes:
+      - ../:/var/www:consistent
+
+  nginx:
+    container_name: proxy
+    image: nginx:1.21.0-alpine
+    volumes:
+      - ../:/var/www:consistent
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites/:/etc/nginx/sites-available
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+      - ./logs/:/var/log
+    depends_on:
+      - platform
+    ports:
+      - '80:80'
