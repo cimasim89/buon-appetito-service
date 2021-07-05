@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - feature/*
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  application-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup PHP
+        id: php_setup
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+        if: ${{ steps.php_setup.outcome == 'success' }}
+
+      - name: Composer Install
+        id: setup_composer
+        run: composer.phar install --prefer-dist
+        if: ${{ steps.checkout.outcome == 'success' }}
+
+      - name: Setup Application
+        id: setup_application
+        run: composer install
+        if: ${{ steps.setup_composer.outcome == 'success' }}
+
+      - name: Run Typecheck
+        id: run_typecheck
+        run: vendor/bin/phpstan analyse src tests
+        if: ${{ steps.setup_application.outcome == 'success' }}
+
+      - name: Run Lint
+        id: run_lint
+        run: vendor/bin/phpcs --standard=PSR2 --ignore=database/migrations,bin src
+        if: ${{ steps.setup_application.outcome == 'success' }}
+
+      - name: Run Tests
+        id: run_tests
+        run: composer install
+        if: ${{ steps.setup_application.outcome == 'success' }}
