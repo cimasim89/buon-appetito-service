@@ -15,11 +15,13 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+        tags: ['controller.service_arguments']
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+            - '../src/**/DTO'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
