@@ -7,6 +7,7 @@
         "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "composer/package-versions-deprecated": "1.11.99.2",
         "doctrine/doctrine-bundle": "2.4.2",
         "doctrine/doctrine-migrations-bundle": "3.1.1",
@@ -19,9 +20,9 @@
         "symfony/polyfill-uuid": "^1.23",
         "symfony/proxy-manager-bridge": "5.3.0",
         "symfony/runtime": "5.3.3",
+        "symfony/security-bundle": "5.3.*",
         "symfony/uid": "5.3.3",
-        "symfony/yaml": "5.3.3",
-        "ext-json": "*"
+        "symfony/yaml": "5.3.3"
     },
     "require-dev": {
         "phpstan/phpstan": "0.12.90",

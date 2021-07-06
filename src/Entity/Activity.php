@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use App\Activity\Infrastructure\Repository\SqlActivityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=SqlActivityRepository::class)
  */
-class Activity
+class Activity implements PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id

@@ -4,6 +4,7 @@ namespace App\Activity\Infrastructure\Repository;
 
 use App\Activity\Domain\Repository\ActivityRepository;
 use App\Entity\Activity;
+use App\Services\PasswordHashService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,9 +16,15 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SqlActivityRepository extends ServiceEntityRepository implements ActivityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var PasswordHashService
+     */
+    private $passwordHashService;
+
+    public function __construct(ManagerRegistry $registry, PasswordHashService $passwordHashService)
     {
         parent::__construct($registry, Activity::class);
+        $this->passwordHashService = $passwordHashService;
     }
 
     public function saveActivity(\App\Activity\Domain\Activity $activity): \App\Activity\Domain\Activity
@@ -25,7 +32,7 @@ class SqlActivityRepository extends ServiceEntityRepository implements ActivityR
         $ref = new Activity();
         $ref->setId($activity->getId());
         $ref->setDescription($activity->getDescription());
-        $ref->setPassword($activity->getPassword());
+        $ref->setPassword($this->passwordHashService->hashPassword($activity->getPassword()));
         $ref->setName($activity->getName());
         $ref->setEmail($activity->getEmail());
         $this->getEntityManager()->persist($ref);
