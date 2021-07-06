@@ -35,7 +35,7 @@ do
 
     down)
       if test -f "$DOCKER_COMPOSE_DEV"; then
-        docker-compose -f "$DOCKER_COMPOSE_DEV" down
+        docker-compose -f "$DOCKER_COMPOSE_DEV" --env-file .env down
       else
           echo "$DOCKER_COMPOSE_DEV does not exists! Maybe you need create it."
       fi
