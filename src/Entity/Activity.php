@@ -5,11 +5,13 @@ namespace App\Entity;
 use App\Activity\Infrastructure\Repository\SqlActivityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=SqlActivityRepository::class)
+ * @method string getUserIdentifier()
  */
-class Activity implements PasswordAuthenticatedUserInterface
+class Activity implements PasswordAuthenticatedUserInterface, UserInterface
 {
     /**
      * @ORM\Id
@@ -96,5 +98,26 @@ class Activity implements PasswordAuthenticatedUserInterface
     public function setId($id): void
     {
         $this->id = $id;
+    }
+
+    public function getRoles()
+    {
+        return [];
+    }
+
+    /**
+     * @return string|void|null
+     */
+    public function getSalt()
+    {
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->getEmail();
     }
 }

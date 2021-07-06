@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure;
+namespace App\Infrastructure\Services;
 
 use App\Entity\Activity;
 use App\Services\PasswordHashService;
@@ -25,7 +25,6 @@ class ImplPasswordHashService implements PasswordHashService
     public function isPasswordValid(string $plainPassword, string $password): bool
     {
         $encoder = $this->encoderFactory->getPasswordHasher(new Activity());
-
-        return $encoder->verify($password, $plainPassword);
+        return (bool) $encoder->verify($password, $plainPassword);
     }
 }

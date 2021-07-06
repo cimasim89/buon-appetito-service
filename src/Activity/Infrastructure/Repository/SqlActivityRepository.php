@@ -7,14 +7,16 @@ use App\Entity\Activity;
 use App\Services\PasswordHashService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 /**
  * @method Activity|null find($id, $lockMode = null, $lockVersion = null)
  * @method Activity|null findOneBy(array $criteria, array $orderBy = null)
  * @method Activity[]    findAll()
  * @method Activity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method null loadUserByIdentifier(string $identifier)
  */
-class SqlActivityRepository extends ServiceEntityRepository implements ActivityRepository
+class SqlActivityRepository extends ServiceEntityRepository implements ActivityRepository, UserLoaderInterface
 {
     /**
      * @var PasswordHashService
@@ -38,5 +40,10 @@ class SqlActivityRepository extends ServiceEntityRepository implements ActivityR
         $this->getEntityManager()->persist($ref);
         $this->getEntityManager()->flush();
         return $activity;
+    }
+
+    public function loadUserByUsername(string $email)
+    {
+        return $this->findOneBy(['email'=> $email]);
     }
 }
