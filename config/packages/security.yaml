@@ -21,13 +21,13 @@ security:
             stateless: true
             guard:
                 authenticators:
-                    - App\Securety\EmailPasswordGuardAuthenticator
+                    - App\Security\EmailPasswordGuardAuthenticator
         api:
             pattern: ^/api
             stateless: true
             guard:
                 authenticators:
-                    - App\Securety\JWTGuardAuthenticator
+                    - App\Security\JWTGuardAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

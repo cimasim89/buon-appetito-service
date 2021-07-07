@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Securety;
+namespace App\Security;
 
 use App\Services\PasswordHashService;
 use Symfony\Component\HttpFoundation\Request;
