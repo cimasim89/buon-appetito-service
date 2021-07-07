@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Securety;
+namespace App\Security;
 
 use App\Exceptions\CustomAuthenticationException;
 use Symfony\Component\HttpFoundation\Request;
