@@ -19,7 +19,7 @@ class AuthenticatedActivityController extends AbstractController
 {
 
     /**
-     * @Route("/me", name="acitivity_me", methods={"GET"})
+     * @Route("/me", name="acitivity_me", methods={"GET","OPTIONS"})
      */
     public function getMineActivity(AuthenticatedActivityService $authenticatedActivityService): JsonResponse
     {
