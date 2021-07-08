@@ -2,6 +2,10 @@ controllers_activities:
     resource: ../../src/Activity/Infrastructure/Controller/
     type: annotation
 
+controllers_sections:
+    resource: ../../src/Section/Infrastructure/Controller/
+    type: annotation
+
 kernel:
     resource: ../../src/Kernel.php
     type: annotation
