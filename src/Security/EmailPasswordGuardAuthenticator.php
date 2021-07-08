@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Services\PasswordHashService;
+use App\Services\RequestBodyParser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
@@ -11,10 +12,12 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class EmailPasswordGuardAuthenticator extends GuardAuthenticator
 {
+    private $bodyParser;
     private $passwordHashService;
 
-    public function __construct(PasswordHashService $passwordHashService)
+    public function __construct(PasswordHashService $passwordHashService, RequestBodyParser $bodyParser)
     {
+        $this->bodyParser = $bodyParser;
         $this->passwordHashService = $passwordHashService;
     }
 
@@ -23,10 +26,10 @@ class EmailPasswordGuardAuthenticator extends GuardAuthenticator
         if (!$request->isMethod('POST')) {
             throw new MethodNotAllowedHttpException(['POST']);
         }
-
+        $requestBody = $this->bodyParser->parseBody($request);
         return [
-            'email' => $request->request->get('email'),
-            'password' => $request->request->get('password'),
+            'email' => $requestBody['email'],
+            'password' => $requestBody['password'],
         ];
     }
 
