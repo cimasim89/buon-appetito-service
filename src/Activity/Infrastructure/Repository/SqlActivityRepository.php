@@ -2,6 +2,7 @@
 
 namespace App\Activity\Infrastructure\Repository;
 
+use App\Activity\Domain\Exceptions\ActivityNotFoundException;
 use App\Activity\Domain\Repository\ActivityRepository;
 use App\Entity\Activity;
 use App\Services\PasswordHashService;
@@ -29,6 +30,26 @@ class SqlActivityRepository extends ServiceEntityRepository implements ActivityR
         $this->passwordHashService = $passwordHashService;
     }
 
+    /**
+     * @throws ActivityNotFoundException
+     */
+    public function getActivityByEmail(string $email): \App\Activity\Domain\Activity
+    {
+        $ref = $this->findOneBy([
+            'email' => $email,
+        ]);
+        if (!$ref) {
+            throw new ActivityNotFoundException("Activity not found");
+        }
+        return \App\Activity\Domain\Activity::create(
+            $ref->getId(),
+            $ref->getName(),
+            $ref->getDescription(),
+            $ref->getEmail(),
+            $ref->getPassword()
+        );
+    }
+
     public function saveActivity(\App\Activity\Domain\Activity $activity): \App\Activity\Domain\Activity
     {
         $ref = new Activity();
@@ -44,6 +65,6 @@ class SqlActivityRepository extends ServiceEntityRepository implements ActivityR
 
     public function loadUserByUsername(string $email)
     {
-        return $this->findOneBy(['email'=> $email]);
+        return $this->findOneBy(['email' => $email]);
     }
 }

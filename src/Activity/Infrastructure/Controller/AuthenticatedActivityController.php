@@ -2,20 +2,35 @@
 
 namespace App\Activity\Infrastructure\Controller;
 
+use App\Activity\Application\AuthenticatedActivityService;
+use App\Activity\Application\DTO\GetActivityRequest;
+use App\Activity\Domain\Exceptions\ActivityNotFoundException;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api", name="acitivity_create", methods={"POST"})
+ * @Route("/api/activities")
  */
-class AuthenticatedActivityController
+class AuthenticatedActivityController extends AbstractController
 {
 
     /**
-     * @Route("/activities", name="acitivity_list", methods={"POST"})
+     * @Route("/me", name="acitivity_me", methods={"GET"})
      */
-    public function getActivities(): JsonResponse
+    public function getMineActivity(AuthenticatedActivityService $authenticatedActivityService): JsonResponse
     {
-        return new JsonResponse([], 201);
+        try {
+            $activityEmail = $this->getUser()->getUsername();
+            $response = $authenticatedActivityService->getActivity(GetActivityRequest::create($activityEmail));
+            return new JsonResponse($response, 200);
+        } catch (ActivityNotFoundException $error) {
+            throw new HttpException(Response::HTTP_NOT_FOUND, $error->getMessage());
+        } catch (Exception $error) {
+            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, $error->getMessage());
+        }
     }
 }
