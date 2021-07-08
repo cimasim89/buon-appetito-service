@@ -1,0 +1,8 @@
+nelmio_cors:
+    defaults:
+        origin_regex: true
+        allow_methods: ['*']
+        expose_headers: ['Link']
+        max_age: 3600
+    paths:
+        '^/': null

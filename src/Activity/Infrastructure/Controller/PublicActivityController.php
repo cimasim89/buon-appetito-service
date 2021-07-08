@@ -36,10 +36,11 @@ class PublicActivityController extends AbstractController
      */
     public function loginActivity(
         Request $request,
-        AuthenticateActivityService $authenticateActivityService
+        AuthenticateActivityService $authenticateActivityService,
+        RequestBodyParser $requestBodyParser
     ): JsonResponse {
         $response = $authenticateActivityService->activityLoginAction(
-            LoginActivityRequest::create($request->request->all())
+            LoginActivityRequest::create($requestBodyParser->parseBody($request))
         );
         return new JsonResponse($response, 200);
     }
