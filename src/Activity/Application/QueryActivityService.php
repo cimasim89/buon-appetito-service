@@ -24,4 +24,13 @@ class QueryActivityService
         $activity = $this->activityRepository->getActivityByEmail($activityFindRequest->getEmail());
         return ActivityResponse::createFromActivity($activity);
     }
+
+    /**
+     * @throws ActivityNotFoundException
+     */
+    public function getActivityById(string $activityId): ActivityResponse
+    {
+        $activity = $this->activityRepository->getActivityById($activityId);
+        return ActivityResponse::createFromActivity($activity);
+    }
 }
