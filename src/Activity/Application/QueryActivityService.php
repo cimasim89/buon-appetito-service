@@ -6,17 +6,14 @@ use App\Activity\Application\DTO\ActivityResponse;
 use App\Activity\Application\DTO\GetActivityRequest;
 use App\Activity\Domain\Exceptions\ActivityNotFoundException;
 use App\Activity\Domain\Repository\ActivityRepository;
-use App\Services\UuidService;
 
-class AuthenticatedActivityService
+class QueryActivityService
 {
     private $activityRepository;
-    private $uuidService;
 
-    public function __construct(ActivityRepository $activityRepository, UuidService $uuidService)
+    public function __construct(ActivityRepository $activityRepository)
     {
         $this->activityRepository = $activityRepository;
-        $this->uuidService = $uuidService;
     }
 
     /**
