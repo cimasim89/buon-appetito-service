@@ -13,6 +13,7 @@ interface ActivityRepository
      * @return Activity
      */
     public function getActivityByEmail(string $email): Activity;
+    public function getActivityById(string $activityId): Activity;
     public function saveActivity(Activity $activity): Activity;
     public function findAll();
 }

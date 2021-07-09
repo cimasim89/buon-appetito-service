@@ -67,4 +67,22 @@ class SqlActivityRepository extends ServiceEntityRepository implements ActivityR
     {
         return $this->findOneBy(['email' => $email]);
     }
+
+    /**
+     * @throws ActivityNotFoundException
+     */
+    public function getActivityById(string $activityId): \App\Activity\Domain\Activity
+    {
+        $ref = $this->find($activityId);
+        if (!$ref) {
+            throw new ActivityNotFoundException("Activity not found");
+        }
+        return \App\Activity\Domain\Activity::create(
+            $ref->getId(),
+            $ref->getName(),
+            $ref->getDescription(),
+            $ref->getEmail(),
+            $ref->getPassword()
+        );
+    }
 }

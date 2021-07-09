@@ -1,3 +1,7 @@
+controllers_agregate:
+    resource: ../../src/Aggregate/Infrastructure/Controller/
+    type: annotation
+
 controllers_activities:
     resource: ../../src/Activity/Infrastructure/Controller/
     type: annotation
@@ -5,7 +9,6 @@ controllers_activities:
 controllers_items:
     resource: ../../src/Item/Infrastructure/Controller/
     type: annotation
-
 
 controllers_sections:
     resource: ../../src/Section/Infrastructure/Controller/

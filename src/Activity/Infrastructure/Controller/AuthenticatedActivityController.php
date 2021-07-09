@@ -2,7 +2,7 @@
 
 namespace App\Activity\Infrastructure\Controller;
 
-use App\Activity\Application\AuthenticatedActivityService;
+use App\Activity\Application\QueryActivityService;
 use App\Activity\Application\DTO\GetActivityRequest;
 use App\Activity\Domain\Exceptions\ActivityNotFoundException;
 use Exception;
@@ -21,7 +21,7 @@ class AuthenticatedActivityController extends AbstractController
     /**
      * @Route("/me", name="acitivity_me", methods={"GET","OPTIONS"})
      */
-    public function getMineActivity(AuthenticatedActivityService $authenticatedActivityService): JsonResponse
+    public function getMineActivity(QueryActivityService $authenticatedActivityService): JsonResponse
     {
         try {
             $activityEmail = $this->getUser()->getUsername();
