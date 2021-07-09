@@ -27,7 +27,6 @@ class SqlSectionRepository extends ServiceEntityRepository implements SectionRep
             ->setName($section->getName())
             ->setSequence($section->getSequence())
             ->setActivityId($section->getActivityId());
-        print_r($ref);
         $this->getEntityManager()->persist($ref);
         $this->getEntityManager()->flush();
         return $section;
@@ -50,5 +49,25 @@ class SqlSectionRepository extends ServiceEntityRepository implements SectionRep
         $ref = $this->find($sectionId);
         $this->getEntityManager()->remove($ref);
         $this->getEntityManager()->flush();
+    }
+
+    public function modifySection(string $sectionId, array $data): \App\Section\Domain\Section
+    {
+        $ref = $this->find($sectionId);
+        if (!is_null($data["name"])) {
+            $ref->setName($data["name"]);
+        }
+        if (!is_null($data["sequence"])) {
+            $ref->setSequence($data["sequence"]);
+        }
+        $this->getEntityManager()->persist($ref);
+        $this->getEntityManager()->flush();
+
+        return \App\Section\Domain\Section::create(
+            $ref->getId(),
+            $ref->getName(),
+            $ref->getSequence(),
+            $ref->getActivityId()
+        );
     }
 }
