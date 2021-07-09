@@ -2,6 +2,8 @@
 
 namespace App\Section\Infrastructure\Controller;
 
+use App\Item\Application\DTO\GetItemBySectionIdQuery;
+use App\Item\Application\QueryItemService;
 use App\Section\Application\CreateSectionService;
 use App\Section\Application\DeleteSectionService;
 use App\Section\Application\DTO\CreateSectionRequest;
@@ -69,6 +71,20 @@ class SectionController
                     $request
                 ))
             );
+            return new JsonResponse($response, 200);
+        } catch (Exception $error) {
+            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, $error->getMessage());
+        }
+    }
+
+
+    /**
+     * @Route("/{sectionId}/items", name="get_section_items", methods={"GET","OPTIONS"})
+     */
+    public function getItemsBySectionId(string $sectionId, QueryItemService $queryItemService): JsonResponse
+    {
+        try {
+            $response = $queryItemService->getItemBySectionId(GetItemBySectionIdQuery::create($sectionId));
             return new JsonResponse($response, 200);
         } catch (Exception $error) {
             throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, $error->getMessage());
