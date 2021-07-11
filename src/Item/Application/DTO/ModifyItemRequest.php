@@ -13,7 +13,7 @@ class ModifyItemRequest
      */
     public $price;
 
-    public function __construct(string $name, int $price)
+    public function __construct(?string $name, ?int $price)
     {
         $this->name = $name;
         $this->price = $price;
@@ -22,8 +22,8 @@ class ModifyItemRequest
     public static function create(array $data): ModifyItemRequest
     {
         return new ModifyItemRequest(
-            $data["name"],
-            $data["price"]
+            $data["name"] ?? null,
+            $data["price"] ?? null
         );
     }
 

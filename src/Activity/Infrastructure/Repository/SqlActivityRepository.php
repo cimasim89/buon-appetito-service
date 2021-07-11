@@ -85,4 +85,25 @@ class SqlActivityRepository extends ServiceEntityRepository implements ActivityR
             $ref->getPassword()
         );
     }
+
+    public function modifyActivity(string $activityId, array $data): \App\Activity\Domain\Activity
+    {
+        $ref = $this->find($activityId);
+        if (!is_null($data["name"])) {
+            $ref->setName($data["name"]);
+        }
+        if (!is_null($data["description"])) {
+            $ref->setDescription($data["description"]);
+        }
+        $this->getEntityManager()->persist($ref);
+        $this->getEntityManager()->flush();
+
+        return \App\Activity\Domain\Activity::create(
+            $ref->getId(),
+            $ref->getName(),
+            $ref->getDescription(),
+            $ref->getEmail(),
+            $ref->getPassword()
+        );
+    }
 }
