@@ -14,6 +14,7 @@ interface ActivityRepository
      */
     public function getActivityByEmail(string $email): Activity;
     public function getActivityById(string $activityId): Activity;
+    public function modifyActivity(string $activityId, array $data): Activity;
     public function saveActivity(Activity $activity): Activity;
     public function findAll();
 }

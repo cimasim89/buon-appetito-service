@@ -13,7 +13,7 @@ class ModifySectionRequest
      */
     public $sequence;
 
-    public function __construct(string $name, int $sequence)
+    public function __construct(?string $name, ?int $sequence)
     {
         $this->name = $name;
         $this->sequence = $sequence;
@@ -22,8 +22,8 @@ class ModifySectionRequest
     public static function create(array $data): ModifySectionRequest
     {
         return new ModifySectionRequest(
-            $data["name"],
-            $data["sequence"]
+            $data["name"] ?? null,
+            $data["sequence"] ?? null
         );
     }
 
